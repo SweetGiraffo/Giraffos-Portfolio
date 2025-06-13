@@ -1,996 +1,794 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giraffo's Portfolio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lord Giraffo</title>
+    
+    <link rel="icon" href="assets/images/logo.ico" type="image/x-icon">
 
-  <!--
-    - favicon
-  -->
-  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-  <!--
-    - custom css link
-  -->
-  <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+        :root {
+            /* Colors */
+            --bg-dark-primary: #000000;
+            --bg-dark-secondary: #0a0a0a;
+            --bg-panel: rgba(10, 10, 10, 0.1);
+            --border-color: rgba(255, 223, 0, 0.25);
+            --glow-yellow: #ffdf00;
+            --glow-orange: #ff8c00;
+            --text-primary: #e0e1dd;
+            --text-secondary: #a7a9be;
+            --text-title: #ffffff;
+            --glitch-yellow: hsla(52, 100%, 50%, 0.8);
+            --glitch-orange: hsla(33, 100%, 50%, 0.8);
 
-  <!--
-    - google font link
-  -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+            /* Typography */
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Share Tech Mono', monospace;
+
+            /* Sizing */
+            --fs-xl: clamp(2rem, 1rem + 5.55vw, 4.5rem);
+            --fs-l: clamp(1.5rem, 1.09rem + 2.04vw, 2.5rem);
+            --fs-m: clamp(1.13rem, 1.01rem + 0.58vw, 1.4rem);
+            --fs-s: 1rem;
+            --fs-xs: 0.875rem;
+
+            /* Shadows & Effects */
+            --shadow-yellow: 0 0 5px var(--glow-yellow), 0 0 10px var(--glow-yellow), 0 0 20px var(--glow-yellow);
+            --shadow-orange: 0 0 5px var(--glow-orange), 0 0 10px var(--glow-orange);
+
+            /* Transitions */
+            --transition-short: 0.25s ease;
+            --transition-long: 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Base & Reset */
+/* Base & Reset */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* html { font-family: var(--font-body); color: var(--text-primary); background-color: var(--bg-dark-primary); scroll-behavior: smooth; } */ /* REMOVE or COMMENT OUT this line */
+html { font-family: var(--font-body); color: var(--text-primary); scroll-behavior: smooth; } /* Keep other properties */
+
+/* body { background-color: var(--bg-dark-primary); overflow-x: hidden; position: relative; } */ /* REMOVE or COMMENT OUT this line */
+body { overflow-x: hidden; position: relative; } /* Keep other properties */
+        
+        /* Matrix Background */
+        #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 1; }
+        
+        /* Scanline Overlay */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0, rgba(0,0,0,0.2) 1px, rgba(0,0,0,0.5) 2px); /* Adjusted for subtlety */
+    pointer-events: none;
+    z-index: 1000;
+}
+        
+        /* Custom Scrollbar */
+        body::-webkit-scrollbar { width: 10px; }
+        body::-webkit-scrollbar-track { background: var(--bg-dark-secondary); }
+        body::-webkit-scrollbar-thumb { background: var(--glow-yellow); box-shadow: var(--shadow-yellow); border-radius: 0; }
+
+        /* General Styles */
+        a { color: var(--glow-yellow); text-decoration: none; }
+        a:hover { text-shadow: var(--shadow-yellow); }
+        h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--text-title); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 4px var(--glow-orange); }
+        h1 { font-size: var(--fs-xl); }
+        h2 { font-size: var(--fs-l); margin-bottom: 2rem; }
+        h3 { font-size: var(--fs-m); }
+        h4 { font-size: var(--fs-s); }
+
+        /* Main Layout */
+        main { display: flex; flex-direction: column; padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        @media (min-width: 1024px) { main { flex-direction: row; gap: 2rem; padding: 2rem; } }
+
+        /* Sidebar */
+/* Sidebar */
+.sidebar {
+    flex-shrink: 0;
+    width: 100%;
+    /* Keep the background and border here as it defines the main sidebar appearance */
+    background: var(--bg-panel); /* rgba(10, 10, 10, 0.5) */
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    backdrop-filter: blur(5px); /* Reduced blur from 10px to 5px for more clarity */
+    position: relative;
+    z-index: 10;
+}
+@media (min-width: 1024px) {
+    .sidebar {
+        width: 320px;
+        position: sticky;
+        top: 2rem;
+        align-self: flex-start;
+    }
+}
+
+/* Hobbies & Interests Section (Sidebar Styles) */
+.hobbies-sidebar-container {
+    /* This div itself doesn't need a background or border as it's within the sidebar which already has it */
+    padding: 0 0 1.5rem 0; /* Adjust padding to match sidebar sections, removed top padding as separator handles spacing */
+    position: relative;
+    z-index: 10;
+    /* Explicitly set a more transparent background if desired, or remove to fully inherit sidebar's transparency */
+    /* background: rgba(10, 10, 10, 0.3); /* Even more transparent than the sidebar's overall background */
+    /* If you uncomment the line above, the hobbies section will be slightly more transparent than other sidebar sections */
+}
+        .sidebar-header { text-align: center; margin-bottom: 1.5rem; }
+/* Existing Avatar Styles - Keep these as they are */
+        .avatar {
+            position: relative; /* Keep this */
+            overflow: hidden; /* Keep this */
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            border: 2px solid var(--glow-yellow);
+            padding: 5px;
+            box-shadow: var(--shadow-yellow), inset 0 0 10px var(--glow-yellow);
+            border-radius: 18%;
+        }
+        .avatar img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(1.2) contrast(1.1);
+            border-radius: 18%;
+        }
+
+        /* --- NEW DIGITAL STATIC / FLICKER EFFECT FOR AVATAR --- */
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit; /* Inherit the 18% border-radius */
+            pointer-events: none; /* Allows interactions to pass through */
+            z-index: 1; /* Ensure it's above the image but below any other UI elements */
+            /* This gradient creates subtle horizontal static lines */
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.05) 0px, /* Very subtle white static */
+                rgba(0, 0, 0, 0.05) 1px,        /* Very subtle black static */
+                rgba(255, 255, 255, 0.05) 2px
+            );
+            /* Initial opacity for flicker */
+            opacity: 0.2;
+            animation: avatarStaticFlicker 0.4s infinite alternate-reverse,
+                       avatarNoiseShift 1.5s linear infinite; /* Combine flicker and subtle noise shift */
+        }
+
+        /* You can remove .avatar::after if you only want one overlay layer */
+        /* If you want a more complex effect, you could use ::after for another subtle layer */
+        .avatar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 2; /* Slightly above ::before */
+            /* This adds a very subtle "scanline" or "CRT" effect */
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.1) 0%, /* Transparent black at top */
+                rgba(0, 0, 0, 0.0) 50%, /* Fully transparent in middle */
+                rgba(0, 0, 0, 0.1) 100% /* Transparent black at bottom */
+            );
+            opacity: 0; /* Hidden by default */
+            animation: avatarScanlinePulse 3s infinite ease-in-out; /* Slow pulsing scanline */
+        }
 
 
+        /* Keyframes for the static flicker */
+        @keyframes avatarStaticFlicker {
+            0%, 100% { opacity: 0.2; }
+            20% { opacity: 0.35; }
+            40% { opacity: 0.15; }
+            60% { opacity: 0.25; }
+            80% { opacity: 0.1; }
+        }
+
+        /* Keyframes for subtle background noise shift */
+        @keyframes avatarNoiseShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 -100px; /* Shifts the static pattern downwards */ }
+        }
+
+        /* Keyframes for a pulsing scanline effect */
+        @keyframes avatarScanlinePulse {
+            0%, 100% { opacity: 0; transform: translateY(-100%); }
+            50% { opacity: 0.1; transform: translateY(100%); } /* Pulse down and up */
+        }
+
+        /* --- END DIGITAL STATIC / FLICKER EFFECT FOR AVATAR --- */
+        .sidebar .name { font-size: var(--fs-m); font-weight: 700; color: var(--text-title); margin-bottom: 0.25rem; }
+        .sidebar .title { color: var(--glow-yellow); background: rgba(255, 223, 0, 0.1); border: 1px solid var(--border-color); font-size: var(--fs-xs); padding: 0.25rem 0.5rem; display: inline-block; margin-bottom: 1.5rem; }
+        .separator { width: 100%; height: 1px; background: var(--border-color); margin: 1.5rem 0; box-shadow: 0 0 5px rgba(255, 140, 0, 0.5); }
+        .contacts-list { list-style: none; display: grid; gap: 1rem; }
+        .contact-item { display: flex; align-items: center; gap: 1rem; font-size: var(--fs-xs); }
+        .contact-item .icon-box { color: var(--glow-yellow); font-size: 1.5rem; }
+        .contact-title { color: var(--text-secondary); margin-bottom: 0.1rem; }
+        .social-list { display: flex; justify-content: center; gap: 1.5rem; list-style: none; }
+        .social-link { font-size: 1.8rem; color: var(--text-primary); transition: var(--transition-short); }
+        .social-link:hover { color: var(--glow-yellow); transform: scale(1.2); text-shadow: var(--shadow-yellow); }
+
+  /* Collapsible Contact Details */
+        .show-contacts-btn {
+            display: none; /* Hidden by default for desktop */
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-dark-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--glow-yellow);
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+            text-align: center;
+        }
+
+        .show-contacts-btn:hover {
+            background: rgba(255, 223, 0, 0.1);
+            border-color: var(--glow-orange);
+        }
+
+        .contacts-content-hidden {
+            /* Default for desktop: visible */
+            display: block; /* Ensures content is visible on desktop initially */
+            overflow: hidden;
+            /* Transition properties are fine here, they will apply when 'expanded' is toggled */
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-out, visibility 0.5s step-end;
+        }
+
+        /* Mobile/Portrait specific styles for contacts */
+        @media (max-width: 1023px) {
+            .show-contacts-btn {
+                display: block; /* Show button in portrait */
+                margin-bottom: 1rem; /* Space below button when active */
+            }
+            .contacts-content-hidden {
+                max-height: 0; /* Hidden by default on mobile */
+                opacity: 0; /* Hidden by default on mobile */
+                visibility: hidden; /* Hidden by default on mobile */
+                /* Adjust transition for show/hide, step-end makes it invisible immediately on collapse */
+                transition: max-height 0.5s ease-out, opacity 0.5s ease-out, visibility 0.5s step-end;
+            }
+            .contacts-content-hidden.expanded {
+                max-height: 500px; /* A generous height to cover all content. Adjust if content is very long */
+                opacity: 1;
+                visibility: visible;
+                /* Adjust transition for show/hide, step-start makes it visible immediately on expand */
+                transition: max-height 0.5s ease-in, opacity 0.5s ease-in, visibility 0.5s step-start;
+            }
+        }
+
+
+        /* Main Content */
+        .main-content { flex-grow: 1; width: 100%; margin-top: 2rem; }
+        @media (min-width: 1024px) { .main-content { margin-top: 0; } }
+        
+        /* Navbar */
+        .navbar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-panel); border-top: 1px solid var(--border-color); backdrop-filter: blur(10px); z-index: 100; }
+        .navbar-list { display: flex; justify-content: space-around; list-style: none; }
+        .navbar-link { color: var(--text-primary); font-family: var(--font-heading); font-size: var(--fs-xs); padding: 1rem 0.5rem; background: none; border: none; text-transform: uppercase; cursor: pointer; transition: var(--transition-short); }
+        @media (min-width: 1024px) { .navbar { position: relative; bottom: auto; background: none; border: none; backdrop-filter: none; margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--border-color); } .navbar-list { justify-content: flex-start; gap: 2rem; } }
+        .navbar-link.active { color: var(--glow-yellow); text-shadow: var(--shadow-yellow); }
+
+        /* Glitch Effect */
+        @keyframes glitch { 0%{text-shadow:1px 0 0 var(--glitch-orange),-1px 0 0 var(--glitch-yellow)} 25%{text-shadow:-1px 0 0 var(--glitch-orange),1px 0 0 var(--glitch-yellow)} 50%{text-shadow:1px 0 0 var(--glitch-orange),-1px 0 0 var(--glitch-yellow);transform:translate(-1px,1px) skewX(-10deg)} 75%{text-shadow:-1px 0 0 var(--glitch-orange),1px 0 0 var(--glitch-yellow);transform:translate(1px,-1px) skewX(10deg)} 100%{text-shadow:1px 0 0 var(--glitch-orange),-1px 0 0 var(--glitch-yellow)} }
+        .navbar-link:hover:not(.active) { color: var(--glow-orange); animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+         
+        /*editing start */
+        @keyframes neon-blink {
+    0%, 100% {
+        color: var(--text-title); /* Base color */
+        text-shadow: none;
+    }
+    50% {
+        color: var(--glow-yellow); /* Neon glow color */
+        text-shadow: 0 0 5px var(--glow-yellow),
+                     0 0 10px var(--glow-yellow),
+                     0 0 20px var(--glow-yellow),
+                     0 0 40px var(--glow-yellow); /* More intense glow */
+    }
+}
+
+#lord-giraffo-name {
+    animation: neon-blink 2s infinite alternate ease-in-out; /* Adjust timing as needed */
+}
+        /*editing end*/
+/* Autoscrolling for Languages */
+.clients-carousel-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 80px; /* Same height as clients-list */
+}
+
+.clients-carousel-wrapper::before,
+.clients-carousel-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    width: 50px; /* Smaller fade areas */
+    height: 100%;
+    pointer-events: none;
+}
+
+.clients-carousel-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-dark-primary) 0%, transparent 100%);
+}
+
+.clients-carousel-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-dark-primary) 0%, transparent 100%);
+}
+
+@keyframes clients-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-1 * (60px + 1.5rem) * 6)); } /* (icon-height + gap) * number-of-original-items */
+}
+
+.clients-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: flex-start;
+    height: 80px;
+    overflow: hidden;
+    position: relative;
+    width: calc((60px + 1.5rem) * 12); /* (icon-height + gap) * total-items (original + duplicate) */
+    animation: clients-scroll 25s linear infinite; /* Adjust speed as needed */
+}
+        /* Pages & On-Scroll Animation */
+.page {
+    display: none;
+    background: var(--bg-panel); /* This will now be semi-transparent */
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    backdrop-filter: blur(10px); /* This will now blur the matrix background behind it */
+}
+        .page.active { display: block; animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .page > header { position: relative; padding-bottom: 1rem; }
+        .page > header::after { content: ''; position: absolute; bottom: 0; left: 0; width: 60px; height: 3px; background: var(--glow-yellow); box-shadow: var(--shadow-yellow); }
+        .page section { margin-top: 2.5rem; }
+        .section-title { margin-bottom: 1.5rem; }
+        .hidden { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .show { opacity: 1; transform: translateY(0); }
+
+        /* Auto-scrolling Carousel */
+        .carousel-wrapper { overflow: hidden; position: relative; width: 100%; height: 180px; /* Adjust height as needed */ }
+        .carousel-wrapper::before, .carousel-wrapper::after { content: ''; position: absolute; top: 0; z-index: 2; width: 100px; height: 100%; pointer-events: none; }
+        .carousel-wrapper::before { left: 0; background: linear-gradient(to right, var(--bg-dark-primary) 0%, transparent 100%); }
+        .carousel-wrapper::after { right: 0; background: linear-gradient(to left, var(--bg-dark-primary) 0%, transparent 100%); }
+
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-250px * 4)); /* item-width * number-of-items */ } }
+        .service-list { display: flex; width: calc(250px * 8); /* item-width * (number-of-items * 2) */ animation: scroll 40s linear infinite; gap: 20px; }
+        .service-item { width: 230px; /* item-width - gap */ border: 1px solid var(--border-color); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0; }
+        .service-icon-box img { filter: brightness(0) invert(1); opacity: 0.8; width: 40px; }
+
+        /* Hobbies & Interests Section (Sidebar Styles) */
+        .hobbies-sidebar-container {
+            /* This div itself doesn't need a background or border as it's within the sidebar which already has it */
+            padding: 0 0 1.5rem 0; /* Adjust padding to match sidebar sections, removed top padding as separator handles spacing */
+            position: relative;
+            z-index: 10;
+        }
+
+        .hobbies-list-single-item {
+            list-style: none;
+            position: relative; /* Important for absolute positioning of children */
+            height: 180px; /* Fixed height for consistent display and fade effect */
+            overflow: hidden; /* Hide overflowing hobby items */
+            display: flex; /* Use flex to center content within the fixed height */
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem; /* Padding for hobby items inside this container */
+        }
+        .hobby-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+            opacity: 0; /* Start hidden for animation */
+            transition: opacity 0.5s ease-in-out;
+            position: absolute; /* Position absolutely to allow layering for fade effect */
+            width: calc(100% - 2rem); /* Take full width of parent minus padding */
+        }
+        .hobby-item.active {
+            opacity: 1; /* Show when active */
+        }
+        .hobby-icon-box img {
+            filter: brightness(0) invert(1);
+            opacity: 0.8;
+            width: 60px; /* Slightly larger icon for single display */
+            margin: 0 auto 0.5rem; /* Center icon */
+        }
+        
+        /* Clients / Languages */
+/* Clients / Languages */
+.clients-list {
+    display: flex;
+    flex-wrap: nowrap; /* Change from wrap to nowrap for autoscroll */
+    gap: 1.5rem; /* Slightly increase gap between logos */
+    align-items: center;
+    justify-content: flex-start; /* Align to start for scrolling */
+    height: 100px; /* Increased height to give more space for the row */
+    overflow: hidden; /* Hide overflow for the scroll effect */
+    position: relative; /* Needed for gradients and animation */
+    width: 100%;
+}
+
+
+
+.clients-item img {
+    height: 60px; /* Increased icon size from 40px to 60px */
+    transition: var(--transition-short);
+    animation: language-neon-blink 3s infinite alternate ease-in-out;
+}
+@keyframes language-neon-blink {
+    0%, 100% {
+        filter: brightness(5) invert(1) grayscale(1); /* Original grayscale */
+        box-shadow: none;
+    }
+    50% {
+        filter: none; /* Full color */
+        box-shadow: 0 0 5px var(--glow-yellow),
+                    0 0 10px var(--glow-yellow); /* Subtle glow */
+    }
+}      
+
+.clients-item img:hover {
+    filter: none; /* Full color on hover */
+    box-shadow: 0 0 10px var(--glow-yellow), 0 0 20px var(--glow-orange); /* More intense glow on hover */
+}
+        /* Resume */
+        .timeline-list { list-style: none; position: relative; padding-left: 2.5rem; }
+        .timeline-list::before { content: ''; position: absolute; left: 8px; top: 0; width: 2px; height: 100%; background: var(--border-color); }
+        .timeline-item { position: relative; margin-bottom: 2rem; }
+        .timeline-item::before { content: ''; position: absolute; left: -32px; top: 4px; width: 10px; height: 10px; background: var(--glow-yellow); box-shadow: var(--shadow-yellow); transform: rotate(45deg); }
+        .timeline-item-title { color: var(--text-title); margin-bottom: 0.25rem; }
+        .timeline-item span { color: var(--glow-orange); font-size: var(--fs-xs); margin-bottom: 0.5rem; display: block; }
+        .timeline-text { color: var(--text-secondary); line-height: 1.6; }
+        .skills-list { list-style: none; display: grid; gap: 1rem; }
+        .skill-progress-bg { background: rgba(255, 223, 0, 0.1); width: 100%; height: 10px; border: 1px solid var(--border-color); }
+        .skill-progress-fill { background: linear-gradient(90deg, var(--glow-orange), var(--glow-yellow)); height: 100%; }
+        
+        /* Portfolio */
+        .filter-container { margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .filter-btn { background: none; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.5rem 1rem; cursor: pointer; font-family: var(--font-body); transition: var(--transition-short); }
+        .filter-btn:hover { border-color: var(--glow-orange); color: var(--glow-orange); }
+        .filter-btn.active { background: var(--glow-yellow); border-color: var(--glow-yellow); color: var(--bg-dark-primary); box-shadow: var(--shadow-yellow); }
+        .project-list { display: grid; gap: 1.5rem; }
+        @media (min-width: 768px) { .project-list { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1024px) { .project-list { grid-template-columns: 1fr 1fr 1fr; } }
+        .project-item { display: none; }
+        .project-item.active { display: block; animation: scaleUp 0.4s ease-out forwards; }
+        @keyframes scaleUp { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .project-card { background: var(--bg-dark-secondary); border: 1px solid var(--border-color); overflow: hidden; transition: var(--transition-short); }
+        .project-card:hover { border-color: var(--glow-yellow); transform: translateY(-5px); box-shadow: 0 5px 20px rgba(255, 223, 0, 0.1); }
+        .project-img { position: relative; overflow: hidden; height: 200px; }
+        .project-img img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition-long); }
+        .project-card:hover .project-img img { transform: scale(1.1); }
+        .project-content { padding: 1rem; }
+        .project-category { font-size: var(--fs-xs); color: var(--text-secondary); }
+
+        /* Contact */
+        .contact-form { display: grid; gap: 1.5rem; }
+        .input-wrapper { display: grid; gap: 1.5rem; }
+        @media (min-width: 768px) { .input-wrapper { grid-template-columns: 1fr 1fr; } }
+        .form-input { width: 100%; background: var(--bg-dark-secondary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 1rem; font-family: var(--font-body); }
+        .form-input:focus { outline: none; border-color: var(--glow-yellow); box-shadow: inset 0 0 10px rgba(255, 223, 0, 0.2); }
+        .form-btn { background: none; border: 1px solid var(--glow-yellow); color: var(--glow-yellow); padding: 1rem; font-family: var(--font-heading); text-transform: uppercase; cursor: pointer; transition: var(--transition-short); width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .form-btn:hover:not(:disabled) { background: var(--glow-yellow); color: var(--bg-dark-primary); box-shadow: var(--shadow-yellow); }
+        .form-btn:disabled { border-color: var(--border-color); color: var(--text-secondary); cursor: not-allowed; }
+    </style>
 </head>
-
 <body>
+    
+    <canvas id="matrix-bg"></canvas>
 
-  <!--
-    - #MAIN
-  -->
-
-  <main>
-
-    <!--
-      - #SIDEBAR
-    -->
-
-    <aside class="sidebar" data-sidebar>
-
-      <div class="sidebar-info">
-
-        <figure class="avatar-box" id="avatar-box">
-          <img src="./assets/images/my-avatar.png" alt="Vaibhav Choudhary" width="90">
-        </figure>
-
-        <div class="info-content">
-          <h1 class="name" title="Vaibhav Choudhary">Vaibhav Choudhary</h1>
-
-          <p class="title">ECE Engineer</p>
-        </div>
-
-        <button class="info_more-btn" data-sidebar-btn>
-          <span>Show Contacts</span>
-
-          <ion-icon name="chevron-down"></ion-icon>
-        </button>
-
-      </div>
-
-      <div class="sidebar-info_more">
-
-        <div class="separator"></div>
-
-        <ul class="contacts-list">
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="mail-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Email</p>
-
-              <a href="mailto:v.choudhary21032002@gmail.com" class="contact-link">v.choudhary21032002@gmail.com</a>
-            </div>
-
-          </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="phone-portrait-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Phone</p>
-
-              <a href="tel:+919571913516" class="contact-link">+919571913516</a>
-            </div>
-
-          </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="calendar-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Birthday</p>
-
-              <time datetime="2002-03-21">March 21, 2002</time>
-            </div>
-
-          </li>
-
-          <li class="contact-item">
-
-            <div class="icon-box">
-              <ion-icon name="location-outline"></ion-icon>
-            </div>
-
-            <div class="contact-info">
-              <p class="contact-title">Location</p>
-
-              <address>18 Gayatri Vihar, Borkheda, India</address>
-            </div>
-
-          </li>
-
-        </ul>
-
-        <div class="separator"></div>
-
-        <ul class="social-list">
-
-          <li class="social-item">
-            <a href="https://www.linkedin.com/in/tzzsfitsv-3a8b9a210/" class="social-link">
-              <ion-icon name="logo-linkedin"></ion-icon>
-            </a>
-          </li>
-
-          <li class="social-item">
-            <a href="https://github.com/SweetGiraffo" class="social-link">
-              <ion-icon name="logo-github"></ion-icon>
-            </a>
-          </li>
-
-          <li class="social-item">
-            <a href="https://www.instagram.com/sweetgiraffo/" class="social-link">
-              <ion-icon name="logo-instagram"></ion-icon>
-            </a>
-          </li>
-
-        </ul>
-
-      </div>
-
-    </aside>
-
-
-
-
-
-    <!--
-      - #main-content
-    -->
-
-    <div class="main-content">
-
-      <!--
-        - #NAVBAR
-      -->
-
-      <nav class="navbar">
-
-        <ul class="navbar-list">
-
-          <li class="navbar-item">
-            <button class="navbar-link  active" data-nav-link>About</button>
-          </li>
-
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Resume</button>
-          </li>
-
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Portfolio</button>
-          </li>
-
-          <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Contact</button>
-          </li>
-
-        </ul>
-
-      </nav>
-
-
-
-
-
-      <!--
-        - #ABOUT
-      -->
-      
-      <article class="about  active" data-page="about">
-
-        <header>
-          <h2 class="h2 article-title">Hello, Future Collaborator!</h2>
-        </header>
-
-
-        <section class="about-text"> <p> I’m Vaibhav Choudhary, a B.Tech graduate in Electronics and Communication Engineering from NIT Hamirpur. I specialize in circuit design, software development, and applied electronics. </p> <p> I’m passionate about developing desktop applications, refining UI/UX designs, and crafting visual composites using Adobe Photoshop. I’m eager to engage in projects that challenge the status quo and create meaningful impact. Let’s connect to explore potential collaborations. </p> </section>
-
-
-    <!-- Audio Element -->
     <audio id="bg-music" loop>
-      <source src="music.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
+        <source src="music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
 
-        <!--
-          - service
-        -->
-
-        <section class="service">
-
-          <h3 class="h3 service-title">My Services</h3>
-        
-          <ul class="service-list">
-        
-            <li class="service-item">
-        
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-design.svg" alt="Design Icon" width="40">
-              </div>
-        
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Web Design</h4>
-        
-                <p class="service-item-text">
-                  Proficient in creating visually appealing and user-friendly web designs.
-                </p>
-              </div>
-        
-            </li>
-        
-            <li class="service-item">
-        
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-dev.svg" alt="Web Development Icon" width="40">
-              </div>
-        
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Web Development</h4>
-        
-                <p class="service-item-text">
-                  Experienced in developing robust and scalable web applications.
-                </p>
-              </div>
-        
-            </li>
-        
-            <li class="service-item">
-        
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-app.svg" alt="Desktop Development Icon" width="40">
-              </div>
-        
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Desktop Development</h4>
-        
-                <p class="service-item-text">
-                  Skilled in developing desktop applications with a focus on performance and usability.
-                </p>
-              </div>
-        
-            </li>
-        
-            <li class="service-item">
-        
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-photo.svg" alt="Photoshop Icon" width="40">
-              </div>
-        
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Photoshop</h4>
-        
-                <p class="service-item-text">
-                  Expertise in using Photoshop for a range of graphic design tasks, from photo editing to digital art.
-                </p>
-              </div>
-        
-            </li>
-        
-            <li class="service-item">
-        
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-research.svg" alt="Research Analyst Icon" width="40">
-              </div>
-        
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Research Analyst</h4>
-        
-                <p class="service-item-text">
-                  Experienced in conducting knockout searches and invalidity analysis to support intellectual property research and strengthen patent strategies.
-                </p>
-              </div>
-        
-            </li>
-        
-            <li class="service-item">
-        
-              <div class="service-icon-box">
-                <img src="./assets/images/icon-app.svg" alt="Desktop Development Icon" width="40">
-              </div>
-        
-              <div class="service-content-box">
-                <h4 class="h4 service-item-title">Desktop Development</h4>
-        
-                <p class="service-item-text">
-                  Skilled in developing desktop applications with a focus on performance and usability.
-                </p>
-              </div>
-        
-            </li>
-        
-          </ul>
-        
-        </section>
-        
-        
-        <!--
-          - testimonials
-        -->
-
-        <section class="testimonials"> 
-
-          <h3 class="h3 testimonials-title">Hobbies & Interests</h3>
-        
-          <ul class="testimonials-list has-scrollbar">
-        
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-        
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/icon-electronics.svg" alt="Electronics Icon" width="60" data-testimonials-avatar>
+    <main>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <figure class="avatar">
+                    <img src="assets/images/my-avatar.png" alt="Vaibhav Choudhary" onerror="this.onerror=null;this.src='https://placehold.co/120x120/000000/ffdf00?text=A';">
                 </figure>
-        
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>Electronic Circuits</h4>
-        
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    Passionate about creating and troubleshooting electronic circuits, exploring new designs and applications.
-                  </p>
-                </div>
-        
-              </div>
-            </li>
-        
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-        
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/icon-astrophysics.svg" alt="Astrophysics Icon" width="60" data-testimonials-avatar>
-                </figure>
-        
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>Astrophysics</h4>
-        
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    Fascinated by the mysteries of the universe, I enjoy learning about cosmology, black holes, and other celestial phenomena.
-                  </p>
-                </div>
-        
-              </div>
-            </li>
-        
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-        
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/icon-music.svg" alt="Music Icon" width="60" data-testimonials-avatar>
-                </figure>
-        
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>Music</h4>
-        
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    From rock to electronic, music is a key source of inspiration and creativity in both work and life.
-                  </p>
-                </div>
-        
-              </div>
-            </li>
-        
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-        
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/icon-app-dev.svg" alt="Desktop Development Icon" width="60" data-testimonials-avatar>
-                </figure>
-        
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>Building Apps</h4>
-        
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    I enjoy creating functional and intuitive desktop applications, with a focus on performance and usability.
-                  </p>
-                </div>
-        
-              </div>
-            </li>
-        
-          </ul>
-        
-        </section>
-        
+                <h3 class="name" title="Vaibhav Choudhary">
+    <span id="lord-giraffo-name">Lord Giraffo</span>
+</h3>
+                <p class="title">ECE Engineer</p>
+            </div>
+            <div class="separator"></div>
 
-
-        <!--
-          - testimonials modal
-        -->
-
-        <div class="modal-container" data-modal-container>
-
-          <div class="overlay" data-overlay></div>
-
-          <section class="testimonials-modal">
-
-            <button class="modal-close-btn" data-modal-close-btn>
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-
-            <div class="modal-img-wrapper">
-              <figure class="modal-avatar-box">
-                <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="80" data-modal-img>
-              </figure>
-
-              <img src="./assets/images/icon-quote.svg" alt="quote icon">
+            <div class="contacts-collapsible-wrapper">
+                <button class="show-contacts-btn" id="toggle-contacts-btn">Show Contact Details</button>
+                <div class="contacts-content-hidden" id="contact-details-collapsible">
+                    <ul class="contacts-list">
+                        <li class="contact-item"><div class="icon-box"><ion-icon name="mail-outline"></ion-icon></div><div class="contact-info"><p class="contact-title">Email</p><a href="mailto:v.choudhary21032002@gmail.com" class="contact-link">v.choudhary21032002@gmail.com</a></div></li>
+                        <li class="contact-item"><div class="icon-box"><ion-icon name="call-outline"></ion-icon></div><div class="contact-info"><p class="contact-title">Phone</p><a href="tel:+919571913516" class="contact-link">+919571913516</a></div></li>
+                        <li class="contact-item"><div class="icon-box"><ion-icon name="calendar-outline"></ion-icon></div><div class="contact-info"><p class="contact-title">Birthday</p><time datetime="2002-03-21">March 21, 2002</time></div></li>
+                        <li class="contact-item"><div class="icon-box"><ion-icon name="location-outline"></ion-icon></div><div class="contact-info"><p class="contact-title">Location</p><address>18 Gayatri Vihar, Borkheda, India</address></div></li>
+                    </ul>
             </div>
 
-            <div class="modal-content">
-
-              <h4 class="h3 modal-title" data-modal-title>Daniel lewis</h4>
-
-              <time datetime="2021-06-14">14 June, 2021</time>
-
-              <div data-modal-text>
-                <p>
-                  Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
-                  lot of experience
-                  and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
-                  consectetur adipiscing
-                  elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-                </p>
-              </div>
-
+            <div class="separator"></div>
+            <div class="hobbies-sidebar-container">
+                <ul class="hobbies-list-single-item" id="hobbies-single-item-list">
+                    <li class="hobby-item"><div class="hobby-icon-box"><img src="./assets/images/icon-electronics.svg" alt="Electronics Icon"></div><div><h4 class="h4">Electronic Circuits</h4><p>Passionate about creating and troubleshooting electronic circuits.</p></div></li>
+                    <li class="hobby-item"><div class="hobby-icon-box"><img src="./assets/images/icon-astrophysics.svg" alt="Astrophysics Icon"></div><div><h4 class="h4">Astrophysics</h4><p>Fascinated by the mysteries of the universe, cosmology, and black holes.</p></div></li>
+                    <li class="hobby-item"><div class="hobby-icon-box"><img src="./assets/images/icon-music.svg" alt="Music Icon"></div><div><h4 class="h4">Music</h4><p>From rock to electronic, music is a key source of inspiration.</p></div></li>
+                    <li class="hobby-item"><div class="hobby-icon-box"><img src="./assets/images/icon-app-dev.svg" alt="App Dev Icon"></div><div><h4 class="h4">Building Apps</h4><p>I enjoy creating functional and intuitive desktop applications.</p></div></li>
+                </ul>
             </div>
+        </aside>
 
-          </section>
+        <div class="main-content">
+            <nav class="navbar">
+                <ul class="navbar-list">
+                    <li><button class="navbar-link active" data-nav-link="about">About</button></li>
+                    <li><button class="navbar-link" data-nav-link="resume">Resume</button></li>
+                    <li><button class="navbar-link" data-nav-link="portfolio">Portfolio</button></li>
+                    <li><button class="navbar-link" data-nav-link="contact">Contact</button></li>
+                </ul>
+            </nav>
 
+            <article class="page active" data-page="about">
+                <header><h2 class="article-title">Transmission Start</h2></header>
+<section class="about-text hidden">
+  <p>…wait is this thing on??? uh hey hi hello???</p>
+  <p>i’m vaibhav. my hobbies include staring into the ceiling, committing to bad ideas, and regretting things in HD. i once blinked and accidentally enrolled into B.Tech at NIT Hamirpur. haven’t recovered since.</p>
+  <p>professors saw my face n still marked me absent emotionally. i showed up. my will to live didn’t.</p>
+  <p>anyway this page got stuff. like services. maybe things i made. maybe things that made me. who knows. i'm not ur dad. scroll if u want. click stuff. don’t click stuff. it's already too late.</p>
+  <p><i>"i ain't slippin man – i'm slipped."</i></p>
+</section>
+
+
+
+                <section class="hidden">
+                    <h3 class="section-title">My Services</h3>
+                    <div class="carousel-wrapper">
+                        <ul class="service-list">
+                            <li class="service-item"><div class="service-icon-box"><img src="./assets/images/icon-design.svg" alt="Design Icon"></div><div><h4 class="h4">Web Design</h4><p>Proficient in creating visually appealing and user-friendly web designs.</p></div></li>
+                            <li class="service-item"><div class="service-icon-box"><img src="./assets/images/icon-dev.svg" alt="Web Development Icon"></div><div><h4 class="h4">Web Development</h4><p>Experienced in developing robust and scalable web applications.</p></div></li>
+                            <li class="service-item"><div class="service-icon-box"><img src="./assets/images/icon-app.svg" alt="Desktop Development Icon"></div><div><h4 class="h4">Desktop Development</h4><p>Skilled in developing desktop applications with a focus on performance and usability.</p></div></li>
+                            <li class="service-item"><div class="service-icon-box"><img src="./assets/images/icon-photo.svg" alt="Photoshop Icon"></div><div><h4 class="h4">Photoshop</h4><p>Expertise in using Photoshop for a range of graphic design tasks.</p></div></li>
+                            <li class="service-item"><div class="service-icon-box"><img src="./assets/images/icon-design.svg" alt="Design Icon"></div><div><h4 class="h4">Web Design</h4><p>Proficient in creating visually appealing and user-friendly web designs.</p></div></li>
+                            <li class="service-item"><div class="service-icon-box"><img src="./assets/images/icon-dev.svg" alt="Web Development Icon"></div><div><h4 class="h4">Web Development</h4><p>Experienced in developing robust and scalable web applications.</p></div></li>
+                            <li class="service-item"><div class="service-icon-box"><img src="./assets/images/icon-app.svg" alt="Desktop Development Icon"></div><div><h4 class="h4">Desktop Development</h4><p>Skilled in developing desktop applications with a focus on performance and usability.</p></div></li>
+                            <li class="service-item"><div class="service-icon-box"><img src="./assets/images/icon-photo.svg" alt="Photoshop Icon"></div><div><h4 class="h4">Photoshop</h4><p>Expertise in using Photoshop for a range of graphic design tasks.</p></div></li>
+                        </ul>
+                    </div>
+                </section>
+<section class="hidden">
+    <h3 class="section-title">Languages</h3>
+    <div class="clients-carousel-wrapper"> <ul class="clients-list">
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-1-color.png" alt="C++ logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-2-color.png" alt="Python logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-3-color.png" alt="Delphi logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-4-color.png" alt="HTML5 logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-5-color.png" alt="CSS3 logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-6-color.png" alt="JS logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-1-color.png" alt="C++ logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-2-color.png" alt="Python logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-3-color.png" alt="Delphi logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-4-color.png" alt="HTML5 logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-5-color.png" alt="CSS3 logo"></a></li>
+            <li class="clients-item"><a href="#"><img src="./assets/images/logo-6-color.png" alt="JS logo"></a></li>
+        </ul>
+    </div>
+</section>
+            </article>
+
+            <article class="page" data-page="resume">
+                <header><h2 class="article-title">Data Log</h2></header>
+                <section class="hidden"><h3 class="section-title">Work Experience</h3><ol class="timeline-list"><li class="timeline-item"><h4 class="h4 timeline-item-title">iCuerious Research Services LLP</h4><span>July 8, 2024 — Nov 8, 2024</span><p class="timeline-text">Worked as a Research Analyst, focusing on knockout searches and invalidity analysis in the intellectual property domain.</p></li></ol></section>
+                <section class="hidden"><h3 class="section-title">Internships</h3><ol class="timeline-list"><li class="timeline-item"><h4 class="h4 timeline-item-title">Tata Institute of Fundamental Research (TIFR), Mumbai</h4><span>Dec 2023 — Jan 2024</span><p class="timeline-text">Project: "Analyzing the Effects of Stellar Feedback on the Interstellar Medium".</p></li><li class="timeline-item"><h4 class="h4 timeline-item-title">Indian Institute of Technology (IIT), Indore</h4><span>Dec 2021 — Jan 2022</span><p class="timeline-text">Internship on "Basics of Quantum Computing" using the Qiskit framework.</p></li></ol></section>
+                <section class="hidden"><h3 class="section-title">Education</h3><ol class="timeline-list"><li class="timeline-item"><h4 class="h4 timeline-item-title">NIT Hamirpur</h4><span>2020 — 2024</span><p class="timeline-text">B.Tech in Electronics and Communication Engineering, CGPA: 8.12.</p></li><li class="timeline-item"><h4 class="h4 timeline-item-title">Holy Mother Sharda</h4><span>2018 — 2019</span><p class="timeline-text">Higher Secondary School (12th Grade), 79.8%.</p></li></ol></section>
+                <section class="hidden"><h3 class="section-title">Skills</h3><ul class="skills-list"><li class="skills-item"><div class="title-wrapper"><h5>Data Structures & Algorithms</h5><data>70%</data></div><div class="skill-progress-bg"><div class="skill-progress-fill" style="width: 70%;"></div></div></li><li class="skills-item"><div class="title-wrapper"><h5>Python</h5><data>70%</data></div><div class="skill-progress-bg"><div class="skill-progress-fill" style="width: 70%;"></div></div></li><li class="skills-item"><div class="title-wrapper"><h5>Desktop Development</h5><data>50%</data></div><div class="skill-progress-bg"><div class="skill-progress-fill" style="width: 50%;"></div></div></li><li class="skills-item"><div class="title-wrapper"><h5>C++</h5><data>50%</data></div><div class="skill-progress-bg"><div class="skill-progress-fill" style="width: 50%;"></div></div></li></ul></section>
+            </article>
+
+            <article class="page" data-page="portfolio">
+                <header><h2 class="article-title">Archive</h2></header>
+                <section class="hidden">
+                    <div class="filter-container">
+                        <button class="filter-btn active" data-filter-btn="all">All</button>
+                        <button class="filter-btn" data-filter-btn="applications">Applications</button>
+                        <button class="filter-btn" data-filter-btn="web development">Web development</button>
+                        <button class="filter-btn" data-filter-btn="android development">Android development</button>
+                    </div>
+                    <ul class="project-list">
+                        <li class="project-item" data-category="android development"><a href="#" class="project-card"><div class="project-img"><img src="./assets/images/project-1.jpg" alt="Opus Converter"></div><div class="project-content"><p class="project-category">Android development</p><h4 class="h4">Opus Converter</h4></div></a></li>
+                        <li class="project-item" data-category="web development"><a href="#" class="project-card"><div class="project-img"><img src="./assets/images/project-2.png" alt="Sudoku Solver"></div><div class="project-content"><p class="project-category">Web development</p><h4 class="h4">Sudoku Solver</h4></div></a></li>
+                        <li class="project-item" data-category="applications"><a href="#" class="project-card"><div class="project-img"><img src="./assets/images/project-4.png" alt="BBDSG Designer"></div><div class="project-content"><p class="project-category">Applications</p><h4 class="h4">BBDSG Designer</h4></div></a></li>
+                        <li class="project-item" data-category="applications"><a href="#" class="project-card"><div class="project-img"><img src="./assets/images/project-5.png" alt="Drowsiness Detector"></div><div class="project-content"><p class="project-category">Applications</p><h4 class="h4">Drowsiness Detector</h4></div></a></li>
+                        <li class="project-item" data-category="applications"><a href="#" class="project-card"><div class="project-img"><img src="./assets/images/project-6.png" alt="Qiskit GUI"></div><div class="project-content"><p class="project-category">Applications</p><h4 class="h4">Qiskit GUI</h4></div></a></li>
+                    </ul>
+                </section>
+            </article>
+
+            <article class="page" data-page="contact">
+                <header><h2 class="article-title">Connect // Contact</h2></header>
+                <section class="hidden">
+                     <form action="#" class="contact-form" data-form>
+                        <div class="input-wrapper"><input type="text" name="fullname" class="form-input" placeholder="[ Your Name ]" required data-form-input><input type="email" name="email" class="form-input" placeholder="[ Your Email ]" required data-form-input></div>
+                        <textarea name="message" class="form-input" placeholder="[ Your Message Transmission ]" required data-form-input></textarea>
+                        <button class="form-btn" type="submit" disabled data-form-btn><ion-icon name="paper-plane-outline"></ion-icon><span>Transmit Message</span></button>
+                    </form>
+                </section>
+            </article>
         </div>
-
-
-        <!--
-          - clients
-        -->
-
-        <section class="clients">
-
-          <h3 class="h3 clients-title">Languages</h3>
-
-          <ul class="clients-list has-scrollbar">
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-1-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-2-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-3-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-4-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-5-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-6-color.png" alt="client logo">
-              </a>
-            </li>
-
-          </ul>
-
-        </section>
-
-      </article>
-
-
-
-
-
-      <!--
-        - #RESUME
-      -->
-
-      <article class="resume" data-page="resume">
-
-        <header>
-          <h2 class="h2 article-title">Resume</h2>
-        </header>
-
-        <section class="timeline">
-  
- <section class="timeline">
-
-  <section class="timeline">
-
-    <!-- Work Experience Section -->
-    <div class="title-wrapper">
-      <div class="icon-box">
-        <ion-icon name="business-outline"></ion-icon>
-      </div>
-      <h3 class="h3">Work Experience</h3>
-    </div>
-  
-    <ol class="timeline-list">
-      <li class="timeline-item">
-        <h4 class="h4 timeline-item-title">iCuerious Research Services LLP</h4>
-        <span>July 8, 2024 — November 8, 2024</span>
-        <p class="timeline-text">
-          Worked as a Research Analyst, focusing on knockout searches and invalidity analysis in the intellectual property domain.
-        </p>
-      </li>
-    </ol>
-  
-  </section>
-  
-  <section class="timeline">
-  
-    <!-- Internships Section -->
-    <div class="title-wrapper">
-      <div class="icon-box">
-        <ion-icon name="school-outline"></ion-icon>
-      </div>
-      <h3 class="h3">Internships</h3>
-    </div>
-  
-    <ol class="timeline-list">
-      <li class="timeline-item">
-        <h4 class="h4 timeline-item-title">Tata Institute of Fundamental Research (TIFR), Mumbai</h4>
-        <span>December 18, 2023 — January 6, 2024</span>
-        <p class="timeline-text">
-          Worked on a project titled "Analyzing the Effects of Stellar Feedback on the Interstellar Medium" at the High-Energy Astrophysics Laboratory conducted online by TIFR.
-        </p>
-      </li>
-  
-      <li class="timeline-item">
-        <h4 class="h4 timeline-item-title">Electronics & ICT Academy, IIT Roorkee</h4>
-        <span>Certification Programme</span>
-        <p class="timeline-text">
-          Successfully completed the 60-Hour Self-Paced Certification Programme in UI/UX Development, conducted by IIT Roorkee in association with CloudxLab.
-        </p>
-      </li>
-  
-      <li class="timeline-item">
-        <h4 class="h4 timeline-item-title">Indian Institute of Technology (IIT), Indore</h4>
-        <span>December 2, 2021 — January 20, 2022</span>
-        <p class="timeline-text">
-          Completed an "Online Internship on Basics of Quantum Computing" under the mentorship of Prof. Rajesh Sundaresan, Department of Computer Science and Engineering, using the Qiskit framework.
-        </p>
-      </li>
-  
-      <li class="timeline-item">
-        <h4 class="h4 timeline-item-title">All India Council for Astronomy & Space Education (AICASE)</h4>
-        <span>July 29, 2023</span>
-        <p class="timeline-text">
-          Successfully completed an internship on "Mass Accretion Rates in AGN Accretion Disks." Contributed to research on AGN accretion disks, enhancing understanding of their time-dependent behavior under the guidance of Dr. Sonali Kadam.
-        </p>
-      </li>
-    </ol>
-  
-  </section>
-  
-        
-        
-      
-        <section class="timeline">
-      
-          <div class="title-wrapper">
-            <div class="icon-box">
-              <ion-icon name="book-outline"></ion-icon>
-            </div>
-            <h3 class="h3">Education</h3>
-          </div>
-      
-          <ol class="timeline-list">
-      
-            <li class="timeline-item">
-              <h4 class="h4 timeline-item-title">NIT Hamirpur</h4>
-              <span>2020 — 2024</span>
-              <p class="timeline-text">
-                Completed B.Tech in Electronics and Communication Engineering with a CGPA of 8.12.
-              </p>
-            </li>
-      
-            <li class="timeline-item">
-              <h4 class="h4 timeline-item-title">Holy Mother Sharda</h4>
-              <span>2018 — 2019</span>
-              <p class="timeline-text">
-                Higher Secondary School (12th Grade) with a percentage of 79.8%.
-              </p>
-            </li>
-      
-            <li class="timeline-item">
-              <h4 class="h4 timeline-item-title">Maa Bharti</h4>
-              <span>2016 — 2017</span>
-              <p class="timeline-text">
-                Secondary School (10th Grade) with a percentage of 95%.
-              </p>
-            </li>
-      
-          </ol>
-      
-
-
-
-        </section>
-
-        <section class="timeline">
-  
-          <div class="title-wrapper">
-            <div class="icon-box">
-              <ion-icon name="trophy-outline"></ion-icon>
-            </div>
-            <h3 class="h3">Achievements</h3>
-          </div>
-        
-          <ol class="timeline-list">
-        
-            <li class="timeline-item">
-              <h4 class="h4 timeline-item-title">JEE Main</h4>
-              <span>Rank: 21K</span>
-              <p class="timeline-text">
-                Secured an All India Rank (AIR) of 21,000 in JEE Main.
-              </p>
-            </li>
-        
-            <li class="timeline-item">
-              <h4 class="h4 timeline-item-title">JEE Advanced</h4>
-              <span>Rank: 19K</span>
-              <p class="timeline-text">
-                Secured an All India Rank (AIR) of 19,000 in JEE Advanced.
-              </p>
-            </li>
-        
-            <li class="timeline-item">
-              <h4 class="h4 timeline-item-title">NTSE (National Talent Search Examination)</h4>
-              <span>Stage I Qualified</span>
-              <p class="timeline-text">
-                Qualified for NTSE Stage I, a prestigious national-level scholarship examination.
-              </p>
-            </li>
-        
-          </ol>
-        
-        </section>
-
-
-
-
-
-
-
-
-
-
-        <section class="skill">
-      
-          <h3 class="h3 skills-title">Skills</h3>
-      
-          <ul class="skills-list content-card">
-      
-            <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">Data Structures and Algorithms</h5>
-                <data value="70">70%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 70%;"></div>
-              </div>
-            </li>
-      
-            <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">Desktop Development</h5>
-                <data value="50">50%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 50%;"></div>
-              </div>
-            </li>
-      
-            <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">C++</h5>
-                <data value="50">50%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 50%;"></div>
-              </div>
-            </li>
-      
-            <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">Python</h5>
-                <data value="70">70%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 70%;"></div>
-              </div>
-            </li>
-      
-            <li class="skills-item">
-              <div class="title-wrapper">
-                <h5 class="h5">Borland Delphi</h5>
-                <data value="70">70%</data>
-              </div>
-              <div class="skill-progress-bg">
-                <div class="skill-progress-fill" style="width: 70%;"></div>
-              </div>
-            </li>
-      
-          </ul>
-      
-        </section>
-
-
-
-      
-      </article>
-      
-
-
-
-
-
-      <!--
-        - #PORTFOLIO
-      -->
-
-      <article class="portfolio" data-page="portfolio">
-
-        <header>
-          <h2 class="h2 article-title">Portfolio</h2>
-        </header>
-
-        <section class="projects">
-
-          <ul class="filter-list">
-
-            <li class="filter-item">
-              <button class="active" data-filter-btn>All</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Web design</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Applications</button>
-            </li>
-
-            <li class="filter-item">
-              <button data-filter-btn>Android development</button>
-            </li>
-
-          </ul>
-
-          <div class="filter-select-box">
-
-            <button class="filter-select" data-select>
-
-              <div class="select-value" data-selecct-value>Select category</div>
-
-              <div class="select-icon">
-                <ion-icon name="chevron-down"></ion-icon>
-              </div>
-
-            </button>
-
-            <ul class="select-list">
-
-              <li class="select-item">
-                <button data-select-item>All</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Web design</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Applications</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Android development</button>
-              </li>
-
-            </ul>
-
-          </div>
-
-          <ul class="project-list">
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-1.jpg" alt="opus converter" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Opus Converter</h3>
-
-                <p class="project-category">Android development</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-2.png" alt="orizon" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">sudoku solver</h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>
-
-
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-4.png" alt="brawlhalla" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">BBDSG DESIGNER</h3>
-
-                <p class="project-category">Applications</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-5.png" alt="brawlhalla" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Drowsiness Detector</h3>
-
-                <p class="project-category">Applications</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-6.png" alt="brawlhalla" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Qiskit GUI</h3>
-
-                <p class="project-category">Applications</p>
-
-              </a>
-            </li>
-
-
-          </ul>
-
-        </section>
-
-      </article>
-
-
-
-
-
-      <!--
-        - #BLOG
-      -->
-
-
-
-      <!--
-        - #CONTACT
-      -->
-
-      <article class="contact" data-page="contact">
-
-        <header>
-          <h2 class="h2 article-title">Contact</h2>
-        </header>
-
-        <section class="contact-form">
-
-          <h3 class="h3 form-title">Contact Form</h3>
-
-          <form action="#" class="form" data-form>
-
-            <div class="input-wrapper">
-              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
-
-              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
-            </div>
-
-            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
-
-            <button class="form-btn" type="submit" disabled data-form-btn>
-              <ion-icon name="paper-plane"></ion-icon>
-              <span>Send Message</span>
-            </button>
-
-          </form>
-
-        </section>
-
-      </article>
-
-    </div>
-
-  </main>
-
-
-
-
-
-
-  <!--
-    - custom js link
-  -->
-  <script src="./assets/js/script.js"></script>
-
-  <!--
-    - ionicon link
-  -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Matrix Rain Background ---
+            const canvas = document.getElementById('matrix-bg');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+            let latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let nums = '0123456789';
+            let alphabet = katakana + latin + nums;
+            let fontSize = 16;
+            let columns = canvas.width / fontSize;
+            let rainDrops = [];
+            for (let x = 0; x < columns; x++) { rainDrops[x] = 1; }
+
+            const drawMatrix = () => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffdf00';
+                ctx.font = fontSize + 'px monospace';
+                for (let i = 0; i < rainDrops.length; i++) {
+                    let text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                    if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        rainDrops[i] = 0;
+                    }
+                    rainDrops[i]++;
+                }
+            };
+            setInterval(drawMatrix, 30);
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                columns = canvas.width/fontSize;
+                rainDrops = [];
+                for(let x = 0; x < columns; x++) { rainDrops[x] = 1; }
+            });
+
+            // --- On-Scroll Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    } else {
+                        entry.target.classList.remove('show');
+                    }
+                });
+            });
+            const hiddenElements = document.querySelectorAll('.hidden');
+            hiddenElements.forEach((el) => observer.observe(el));
+
+            // --- Background Music Control ---
+            const bgMusic = document.getElementById('bg-music');
+            document.body.addEventListener('click', () => {
+                if (bgMusic.paused) bgMusic.play().catch(e => console.error("Audio play failed:", e));
+            }, { once: true });
+
+            // --- Page Navigation ---
+            const navLinks = document.querySelectorAll('[data-nav-link]');
+            const pages = document.querySelectorAll('[data-page]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const targetPage = link.dataset.navLink;
+                    pages.forEach(page => page.classList.toggle('active', page.dataset.page === targetPage));
+                    navLinks.forEach(navLink => navLink.classList.toggle('active', navLink.dataset.navLink === targetPage));
+                    window.scrollTo(0, 0);
+                });
+            });
+
+            // --- Portfolio Filtering ---
+            const filterBtns = document.querySelectorAll('[data-filter-btn]');
+            const projectItems = document.querySelectorAll('[data-category]');
+            projectItems.forEach(item => item.classList.add('active')); // Show all initially
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filterValue = btn.dataset.filterBtn;
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    projectItems.forEach(item => {
+                        const itemCategory = item.dataset.category;
+                        item.classList.toggle('active', filterValue === 'all' || itemCategory.includes(filterValue));
+                    });
+                });
+            });
+
+            // --- Contact Form Validation ---
+            const form = document.querySelector('[data-form]');
+            const formBtn = document.querySelector('[data-form-btn]');
+            form?.addEventListener('input', () => { formBtn.disabled = !form.checkValidity(); });
+
+            // --- Hobbies & Interests Single Item Auto-Change ---
+            const hobbiesList = document.getElementById('hobbies-single-item-list');
+            const hobbyItems = hobbiesList.querySelectorAll('.hobby-item');
+            let currentHobbyIndex = 0;
+
+            const showNextHobby = () => {
+                hobbyItems.forEach((item, index) => {
+                    item.classList.remove('active');
+                });
+                hobbyItems[currentHobbyIndex].classList.add('active');
+                currentHobbyIndex = (currentHobbyIndex + 1) % hobbyItems.length;
+            };
+
+            // Initial display
+            showNextHobby();
+            // Change hobby every 4 seconds (adjust as needed)
+            setInterval(showNextHobby, 4000);
+
+// --- Collapsible Contact Details for Portrait Mode ---
+            const toggleContactsBtn = document.getElementById('toggle-contacts-btn');
+            const contactDetailsContent = document.getElementById('contact-details-collapsible');
+
+            if (toggleContactsBtn && contactDetailsContent) {
+                toggleContactsBtn.addEventListener('click', () => {
+                    contactDetailsContent.classList.toggle('expanded');
+                    if (contactDetailsContent.classList.contains('expanded')) {
+                        toggleContactsBtn.textContent = 'Hide Contact Details';
+                    } else {
+                        toggleContactsBtn.textContent = 'Show Contact Details';
+                    }
+                });
+
+                // Function to apply correct state on load and resize
+                const applyContactSectionState = () => {
+                    if (window.innerWidth <= 1023) { // Mobile/Portrait mode
+                        // The CSS media query will handle displaying the button
+                        // We need to ensure the content starts hidden and button text is "Show"
+                        contactDetailsContent.classList.remove('expanded'); // Ensure it's not expanded
+                        toggleContactsBtn.textContent = 'Show Contact Details'; // Set button text to "Show"
+                        // The CSS rule for .contacts-content-hidden inside the media query makes it hidden
+                    } else { // Desktop mode
+                        // Ensure button is hidden
+                        toggleContactsBtn.style.display = 'none'; // Explicitly hide button on desktop
+                        // Ensure content is always visible
+                        contactDetailsContent.classList.add('expanded'); // Force expanded to show content
+                        // Remove any inline styles that might interfere from mobile state
+                    }
+                };
+
+                window.addEventListener('resize', applyContactSectionState);
+                applyContactSectionState(); // Apply on page load
+            
+            }
+        });
+    </script>
 </body>
-
 </html>
